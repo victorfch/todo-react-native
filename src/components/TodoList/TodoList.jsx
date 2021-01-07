@@ -3,9 +3,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
+  SectionList,
   View,
+  Image,
 } from "react-native";
+import deleteImage from "todoList/assets/delete.png";
 
 const styles = StyleSheet.create({
   container: {
@@ -34,10 +36,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  deleteText: {
-    color: "#ff0000",
-    fontSize: 18,
-  },
   separator: {
     height: 1,
     width: "86%",
@@ -48,6 +46,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  sectionHeader: {
+    backgroundColor: "#ddd",
+    padding: 10,
+  },
+  emptyImage: {
+    width: 50,
+    height: 50,
+    tintColor: "#005500",
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
 });
 
@@ -73,7 +84,7 @@ const TodoList = ({ todos, onDelete, onUpdate }) => {
           onDelete(newTodos);
         }}
       >
-        <Text style={styles.deleteText}>X</Text>
+        <Image style={styles.icon} source={deleteImage} />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -82,18 +93,39 @@ const TodoList = ({ todos, onDelete, onUpdate }) => {
 
   renderEmptyComponent = () => (
     <View style={styles.emptyList}>
+      <Image
+        style={styles.emptyImage}
+        source={require("todoList/assets/check.png")}
+      />
       <Text>Empty list</Text>
     </View>
   );
 
+  renderSectionHeader = ({ section: { title, data } }) => (
+    <View style={styles.sectionHeader}>
+      <Text>
+        {title} ({data.length})
+      </Text>
+    </View>
+  );
+
   return (
-    <FlatList
+    <SectionList
       style={styles.container}
-      data={todos}
+      sections={
+        todos && todos.length
+          ? [
+              { title: "ToDo", data: todos.filter((todo) => !todo.done) },
+              { title: "Done", data: todos.filter((todo) => todo.done) },
+            ]
+          : []
+      }
       keyExtractor={(todo) => todo.text}
       renderItem={({ item }) => renderItem(item)}
+      renderSectionHeader={renderSectionHeader}
       ItemSeparatorComponent={renderSeparator}
       ListEmptyComponent={renderEmptyComponent}
+      stickySectionHeadersEnabled
     />
   );
 };
