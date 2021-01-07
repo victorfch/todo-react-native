@@ -21,11 +21,8 @@ const styles = StyleSheet.create({
 const TodoList = ({ todos }) => (
   <>
     {todos.map((todo) => (
-      <View style={styles.listItem}>
-        <Text
-          style={[styles.text, todo.done && styles.textDone]}
-          key={todo.text}
-        >
+      <View style={styles.listItem} key={todo.text}>
+        <Text style={[styles.text, todo.done && styles.textDone]}>
           {todo.text}
         </Text>
       </View>
