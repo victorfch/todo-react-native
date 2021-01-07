@@ -40,7 +40,7 @@ const MainScreen = () => {
           }}
         />
       </View>
-      <TodoList todos={todos} />
+      <TodoList todos={todos} onDelete={setTodos} />
     </SafeAreaView>
   );
 };
