@@ -1,4 +1,5 @@
 # todo app using react native
+Project using react native and expo
 
 ## Project setup
 ```

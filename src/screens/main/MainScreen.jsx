@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  TextInput,
-  View,
-  Text,
-  StyleSheet,
-  Button,
-} from "react-native";
+import { SafeAreaView, Text, StyleSheet } from "react-native";
 import TodoList from "todoList/src/components/TodoList";
+import TodoInput from "todoList/src/components/TodoInput";
 
 const initialTodos = [
   { text: "Learn react native", done: false },
@@ -17,29 +11,11 @@ const initialTodos = [
 ];
 
 const MainScreen = () => {
-  const [newTodoText, setNewTodoText] = useState("");
   const [todos, setTodos] = useState(initialTodos);
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.container__title}>To Do List</Text>
-      <View style={styles.row}>
-        <TextInput
-          onChangeText={(e) => setNewTodoText(e)}
-          style={styles.search}
-          value={newTodoText}
-          placeholder="Example todo"
-          autoCapitalize="words"
-          clearButtonMode="always"
-        />
-        <Button
-          title="Add"
-          onPress={() => {
-            const newTodo = { text: newTodoText, done: false };
-            setTodos([newTodo, ...todos]);
-            setNewTodoText("");
-          }}
-        />
-      </View>
+      <TodoInput onNewTodo={(todo) => setTodos([todo, ...todos])} />
       <TodoList todos={todos} onDelete={setTodos} onUpdate={setTodos} />
     </SafeAreaView>
   );
@@ -55,15 +31,6 @@ const styles = StyleSheet.create({
   container__title: {
     fontSize: 20,
     marginBottom: 10,
-  },
-  search: {
-    padding: 5,
-    borderBottomWidth: 2,
-    flex: 1,
-  },
-  row: {
-    width: "80%",
-    flexDirection: "row",
   },
 });
 
