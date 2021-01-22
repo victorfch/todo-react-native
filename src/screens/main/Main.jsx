@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, Text, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import TodoList from "todoList/src/components/TodoList";
 import TodoInput from "todoList/src/components/TodoInput";
 
@@ -10,13 +10,23 @@ const initialTodos = [
   { text: "Learn how to dance", done: false },
 ];
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
   const [todos, setTodos] = useState(initialTodos);
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.container__title}>To Do List</Text>
-      <TodoInput onNewTodo={(todo) => setTodos([todo, ...todos])} />
-      <TodoList todos={todos} onDelete={setTodos} onUpdate={setTodos} />
+      <TodoInput
+        onNewTodo={(todo) => setTodos([todo, ...todos])}
+      />
+      <TodoList
+        todos={todos}
+        onDelete={(newTodos) => setTodos(newTodos)}
+        onUpdate={(newTodos) => setTodos(newTodos)}
+        onEdit={(todo) => {
+          navigation.navigate("Edit", {
+            todo
+          });
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -26,11 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    marginTop: 30,
-  },
-  container__title: {
-    fontSize: 20,
-    marginBottom: 10,
   },
 });
 
